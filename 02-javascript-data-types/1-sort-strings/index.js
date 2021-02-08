@@ -5,9 +5,17 @@
  * @returns {string[]}
  */
 export function sortStrings(arr, param = 'asc') {
-  let result = arr.sort(function(a, b) {  a.localeCompare(b, 'ru', { sensitivity: 'variant' }) });
-  if(param = 'desc') result = -result;
-  
-  return result;
- 
+  switch (param) {
+  case 'asc':
+    return makeSorting(arr, 1);
+  case 'desc':
+    return makeSorting(arr, -1);
+  default:
+    return makeSorting(arr, 1);
+  }
+
+  function makeSorting(array, direction) {
+    return [...array].sort((a, b) =>
+      direction * a.localeCompare(b, ["ru", "en"], {caseFirst: 'upper'}));
+  }
 }
