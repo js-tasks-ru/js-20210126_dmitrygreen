@@ -14,6 +14,7 @@ export function uniq(arr) {
 	for(let item of arr) {
 		set.add(item);
 	}
+  
   array = Array.from(set);
   return array;
 }

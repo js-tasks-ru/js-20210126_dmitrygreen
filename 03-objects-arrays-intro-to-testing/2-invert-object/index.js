@@ -7,7 +7,7 @@ export function invertObj(obj) {
   let result = {};
 
 	if(!obj) {
-		return undefined;
+		return;
 	}
 	
 	for(let [key, value] of Object.entries(obj)) {
