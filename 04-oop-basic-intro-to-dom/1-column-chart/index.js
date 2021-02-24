@@ -64,7 +64,6 @@ export default class ColumnChart {
     }
 
     this.subElements = this.getSubElements(this.element);
-    console.log(this.subElements);
   }
 
   getSubElements(element) {
@@ -73,11 +72,6 @@ export default class ColumnChart {
     return [...elements].reduce((accum, subElement) => {
       
       accum[subElement.dataset.element] = subElement;
-
-      console.log(subElement);
-      
-      console.log(subElement.dataset.element);
-      console.log(accum);
 
       return accum;
     }, {});
