@@ -1,9 +1,12 @@
 class Tooltip {
   pointerOnOver = (event) => {
     if(!event.target.closest('div[data-tooltip]')) return;
-    let elemBelow = document.elementFromPoint(event.pageX, event.pageY);
+    const elemBelow = document.elementFromPoint(event.pageX, event.pageY);
     let text = elemBelow.dataset.tooltip;
-    this.render(text, event);
+   
+    document.body.addEventListener('pointermove', this.pointerOnMove);
+    this.render(text);
+    this.showElementAtMousePosition(event);
   } 
 
   pointerOnOut = (event) => {
@@ -23,7 +26,6 @@ class Tooltip {
   initialize() {
     document.body.addEventListener('pointerover', this.pointerOnOver);
     document.body.addEventListener('pointerout', this.pointerOnOut);
-    document.body.addEventListener('pointermove', this.pointerOnMove);
   }
 
   tooltipTemplate(text = 'some tooltip') {
@@ -32,18 +34,17 @@ class Tooltip {
     `;
   }
 
-  render(text, event) {
+  render(text) {
     const container = document.createElement('div');
     container.innerHTML = this.tooltipTemplate(text);
     const element = container.firstElementChild;
     this.element = element;
-    this.show(event);
+    document.body.append(this.element);
   }
 
-  show(event) {
+  showElementAtMousePosition(event) {
     this.element.style.position = 'absolute';
     this.element.style.zIndex = 1000;
-    document.body.append(this.element);
     this.moveAt(event.pageX, event.pageY);
   }
 
@@ -56,7 +57,6 @@ class Tooltip {
     document.body.removeEventListener('pointerover', this.pointerOnOver);
     document.body.removeEventListener('pointerout', this.pointerOnOut);
     document.body.removeEventListener('pointermove', this.pointerOnMove);
-    this.element = null;
   }
 }
 

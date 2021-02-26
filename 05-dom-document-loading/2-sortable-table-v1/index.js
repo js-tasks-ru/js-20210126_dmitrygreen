@@ -84,8 +84,6 @@ export default class SortableTable {
     this.element = element;
     
     this.subElements = this.getSubElements(element);
-
-    console.error('this.subElements', this.subElements);
   }
 
   sort(field, order) {

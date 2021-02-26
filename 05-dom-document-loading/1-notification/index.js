@@ -41,13 +41,17 @@ export default class NotificationMessage {
     NotificationMessage.currentMessage = this.element;
   }
 
-  show() {
-    document.body.append(this.element);
+  show(parent = document.body) {
+    parent.append(this.element);
     setTimeout(() => this.destroy(), this.duration);
   }
 
-  destroy() {
+  remove() {
     this.element.remove();
-    NotificationMessage.currentMessage = null;
+  }
+
+  destroy() {
+    this.remove();
+    NotificationMessage.activeNotification = null;
   }
 }

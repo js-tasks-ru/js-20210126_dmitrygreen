@@ -2,21 +2,16 @@ export default class SortableTable {
   element;
   subElements = {};
 
-  constructor(headersConfig = [], {
-    data = []
-  } = {}) {
+  constructor(headersConfig = [], { data = [] } = {}) {
     this.headersConfig = headersConfig;
     this.data = data;
 
-    this.defaultSortField = 'price';
+    this.defaultSortField = 'title';
     this.defaultSortOrder = 'asc';
-
-    this.sort = this.sort.bind(this);
-
    
     this.render();
-     this.addEventListeners();
-   this.sort(null, this.defaultSortField, this.defaultSortOrder);
+    this.addEventListeners();
+    this.sort();
   }
 
   getTableHeader() {
@@ -92,16 +87,12 @@ export default class SortableTable {
     this.element = element;
 
     this.subElements = this.getSubElements(element);
-   
   }
 
   addEventListeners() {
     const header = this.subElements.header;
-    console.log(this.subElements);
-
     header.addEventListener('click', this.sort);
   }
-
 
   getSubElements(element) {
     const elements = element.querySelectorAll('[data-element]');
@@ -113,10 +104,13 @@ export default class SortableTable {
     }, {});
   }
 
-  sort(event, field, order) {
+  sort = (event) => {
+
+    let field = this.defaultSortField;
+    let order = this.defaultSortOrder;
       
     if(event) {
-      let targetColumn = event.target.closest('.sortable-table__cell[data-id]');
+      const targetColumn = event.target.closest('.sortable-table__cell[data-id]');
       field = targetColumn.dataset.id;
       order = targetColumn.dataset.order;
   
@@ -130,12 +124,13 @@ export default class SortableTable {
         default:
           order = 'asc';
         }
-    }
 
-    
-    
-    const sortedData = this.sortData(field, order);
+     /*(function(value){
+          return order = { 'desc': 'asc', 'asc': 'desc' }[ value ];
+      })(order = 'desc'); */
+     }
 
+    const sortedData = this.sortData(field, order = 'asc');
     const allColumns = this.element.querySelectorAll('.sortable-table__cell[data-id]');
     const currentColumn = this.element.querySelector(`.sortable-table__cell[data-id="${field}"]`);
 
@@ -168,9 +163,6 @@ export default class SortableTable {
       }
     });
   }
-
-
-  
 
   remove() {
     this.element.remove();
